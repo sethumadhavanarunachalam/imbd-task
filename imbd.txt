@@ -1,0 +1,133 @@
+
+CREATE TABLE Movies(
+	ID INT NOT NULL,
+	Title VARCHAR,
+	ReviewID INT,
+	GenreID INT,
+	PRIMARY KEY (ID)
+)
+SELECT * FROM Movies;
+
+ALTER TABLE Movies ADD COLUMN User_Reviewed INT 
+ALTER TABLE Movies ADD COLUMN Movie_Template VARCHAR
+ALTER TABLE Movies ADD COLUMN Lead_Cast VARCHAR
+ALTER TABLE Movies RENAME COLUMN Lead_Cast TO Lead_Artist
+/*I needed to rename the column so only Renaming */
+
+
+ALTER TABLE Movies ADD CONSTRAINT ReviewId_F_Key FOREIGN KEY (ReviewID) REFERENCES Reviews(ID)
+ALTER TABLE Movies ADD CONSTRAINT GenreId_F_Key FOREIGN KEY (GenreID) REFERENCES Genre(ID)
+ALTER TABLE Movies ADD CONSTRAINT UserId_F_Key FOREIGN KEY (User_Reviewed) REFERENCES Users(ID)
+
+INSERT INTO Movies 
+VALUES(1,'Pursuit Of Happyness',5,4,2,'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQooth_X_lhvBd564u-huAb1DfBhmvZ8ngKSJd9v6i_bKf19sGw
+','Will Smith')
+
+INSERT INTO Movies 
+VALUES(2,'Interstellar',5,2,1,'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRf61mker2o4KH3CbVE7Zw5B1-VogMH8LfZHEaq3UdCMLxARZAB
+','Christoper Nolan')
+
+INSERT INTO Movies 
+VALUES(3,'PreDestination',4,2,1,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR5MljNUMFA6jMauqoRw2HmGO_3DgJTfRpjlMCrjmxZQL-aXN5
+','Ethan Hawke')
+
+INSERT INTO Movies 
+VALUES(4,'R-R-R',5,1,1,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG6L2WmlrU5r2HzTKoXTJC5DFyU9vMbUJ79Cp5P7RB5QEEnXkH
+','RajaMouli')
+
+INSERT INTO Movies 
+VALUES(5,'Wolf of the Wall Street',5,3,2,'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTrqI60p3I82Q67Wh6HEyDC24Orl0qFzSWNX7EH6niO1SnvBsPl','Leonardo DiCaprio')
+
+
+/* Above codes are used to create and manipulate "Movies" table*/
+CREATE TABLE Reviews(
+	ID INT NOT NULL,
+	Review VARCHAR,
+	PRIMARY KEY (ID)
+)
+SELECT  * FROM Reviews;
+
+INSERT INTO Reviews 
+VALUES(1,'Too bad')
+INSERT INTO Reviews 
+VALUES(2,'bad')
+INSERT INTO Reviews 
+VALUES(3,'Average')
+INSERT INTO Reviews 
+VALUES(4,'Good')
+INSERT INTO Reviews 
+VALUES(5,'Very Good')
+
+/* Above codes are used to create and manipulate "Reviews" table*/
+
+CREATE TABLE Users(
+	ID INT NOT NULL,
+	Name VARCHAR,
+	PRIMARY KEY(ID)
+)
+
+SELECT * FROM Users
+
+INSERT INTO Users
+VALUES(1,'Maaran')
+INSERT INTO Users
+Values(2,'Charlie')
+
+/* Above codes are used to create and manipulate "Users" table*/
+
+CREATE TABLE Genre(
+	ID INT NOT NULL,
+	Genre_Type VARCHAR,
+	PRIMARY KEY(ID)
+)
+
+INSERT INTO Genre
+VALUES(1,'Action');
+INSERT INTO Genre
+VALUES(2,'Sci-Fictional');
+INSERT INTO Genre
+VALUES(3,'Crime');
+INSERT INTO Genre
+VALUES(4,'Drama');
+INSERT INTO Genre
+VALUES(5,'Horror/Thriller');
+
+SELECT * FROM Genre;
+
+/* Above codes are used to create and manipulate "Genre" table*/
+
+CREATE TABLE Artists(
+	Name VARCHAR,
+	Skills VARCHAR,
+	PRIMARY KEY(Name)
+)
+SELECT * FROM Artists
+
+INSERT INTO Artists VALUES('Will Smith','Actor')
+INSERT INTO Artists VALUES('Christoper Nolan','Director')
+INSERT INTO Artists VALUES('Ethan Hawke','Actor')
+INSERT INTO Artists VALUES('RajaMouli','Director')
+INSERT INTO Artists VALUES('Leonardo DiCaprio','Actor')
+
+
+CREATE TABLE Ratings(
+	Movie_Name VARCHAR,
+	Rating INT,
+	PRIMARY KEY(Movie_Name)
+)
+SELECT * FROM Ratings;
+
+INSERT INTO Ratings VALUES ('Pursuit Of Happyness',8.8)
+INSERT INTO Ratings VALUES ('Interstellar',8.4)
+INSERT INTO Ratings VALUES ('PreDestination',7.8)
+INSERT INTO Ratings VALUES ('R-R-R',9.1)
+INSERT INTO Ratings VALUES ('Wolf of the Wall Street',8.3)
+
+ALTER TABLE Ratings ALTER Column Rating TYPE Float;
+
+SELECT Movies.Id,Movies.Title,Movies.Lead_Artist,Artists.Skills,Genre.Genre_Type,Reviews.Review,Users.Name As Reviewer,Ratings.Rating,Movies.Movie_Template FROM Movies
+JOIN Reviews ON Movies.ReviewID=Reviews.ID
+JOIN Genre ON Movies.GenreId = Genre.Id
+JOIN Users ON Movies.User_Reviewed = Users.ID
+JOIN Artists ON Movies.Lead_Artist = Artists.Name
+JOIN Ratings ON Movies.Title = Ratings.Movie_Name
